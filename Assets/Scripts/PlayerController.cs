@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         originalGravityScale = rb.gravityScale;
+
+        rb.freezeRotation = true;
     }
 
     void Update()
@@ -112,9 +114,17 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
         {
             isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
+        {
+            isGrounded = false;
         }
     }
 }
