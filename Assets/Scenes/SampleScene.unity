@@ -824,7 +824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4681b583e04136a42a278ce6be72ab72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 8
   jumpForce: 9
   dashSpeed: 13
   dashDuration: 0.2
@@ -832,6 +832,7 @@ MonoBehaviour:
   groundCheckDistance: 2
   fastFallMultiplier: 1.1
   gravityScale: 2
+  fallMultiplier: 1.65
   groundLayer:
     serializedVersion: 2
     m_Bits: 192

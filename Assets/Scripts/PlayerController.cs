@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
     public float dashCooldown = 0.5f;
     public float groundCheckDistance = 0.1f; // Distance for ground check raycast
     public float fastFallMultiplier = 2f; // Multiplier for fast falling
-    public float gravityScale = 2f; // Gravity scale for realistic jump
+    public float gravityScale = 2f; // Normal gravity scale
+    public float fallMultiplier = 2.5f; // Gravity scale for faster falling
     public LayerMask groundLayer; // LayerMask for ground detection
 
     private Rigidbody2D rb;
@@ -27,7 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         originalGravityScale = rb.gravityScale;
-        rb.gravityScale = gravityScale; // Set the custom gravity scale
+        rb.gravityScale = gravityScale; // Set the normal gravity scale
         rb.freezeRotation = true;
     }
 
@@ -47,6 +48,8 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+
+        ApplyGravityScale(); // Apply different gravity scales
     }
 
     void Move()
@@ -87,7 +90,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 isDashing = false;
-                rb.gravityScale = gravityScale; // Restore gravity after the dash
+                rb.gravityScale = gravityScale; // Restore normal gravity after the dash
                 StartDashCooldown();
             }
         }
@@ -127,6 +130,22 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.S) && !isGrounded && !isDashing)
         {
             rb.velocity = new Vector2(rb.velocity.x, -Mathf.Abs(rb.velocity.y) * fastFallMultiplier);
+        }
+    }
+
+    void ApplyGravityScale()
+    {
+        if (rb.velocity.y < 0 && !isGrounded) // Falling
+        {
+            rb.gravityScale = gravityScale * fallMultiplier;
+        }
+        else if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.W)) // Jumping and not holding the jump button
+        {
+            rb.gravityScale = gravityScale * (fallMultiplier / 2);
+        }
+        else // Normal gravity
+        {
+            rb.gravityScale = gravityScale;
         }
     }
 
