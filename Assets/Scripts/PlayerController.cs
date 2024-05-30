@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed = 10f;
     public float dashDuration = 0.2f;
     public float dashCooldown = 0.5f;
+    public float groundCheckDistance = 0.1f; // Distance for ground check raycast
+    public LayerMask groundLayer; // LayerMask for ground detection
 
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -23,7 +25,6 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         originalGravityScale = rb.gravityScale;
-
         rb.freezeRotation = true;
     }
 
@@ -32,11 +33,16 @@ public class PlayerController : MonoBehaviour
         if (!isDashing)
         {
             Move();
-            Jump();
         }
 
         HandleDash();
         UpdateDashCooldown();
+        CheckGrounded();
+
+        if (!isDashing)
+        {
+            Jump();
+        }
     }
 
     void Move()
@@ -50,7 +56,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-            isGrounded = false;
+            isGrounded = false; // Prevent jumping again immediately
         }
     }
 
@@ -112,19 +118,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void CheckGrounded()
     {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
-        {
-            isGrounded = true;
-        }
-    }
+        Vector2 position = transform.position;
+        Vector2 direction = Vector2.down;
 
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
-        {
-            isGrounded = false;
-        }
+        // Cast a ray downward from the center of the player to check for ground
+        RaycastHit2D hit = Physics2D.Raycast(position, direction, groundCheckDistance, groundLayer);
+
+        // Draw the ray in the scene view for debugging
+        Debug.DrawRay(position, direction * groundCheckDistance, Color.red);
+
+        isGrounded = hit.collider != null;
     }
 }
