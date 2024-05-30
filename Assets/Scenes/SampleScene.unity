@@ -343,6 +343,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   jumpForce: 5
+  dashSpeed: 13
+  dashDuration: 0.2
 --- !u!61 &836535547
 BoxCollider2D:
   m_ObjectHideFlags: 0
