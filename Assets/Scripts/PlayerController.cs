@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public float dashDuration = 0.2f;
     public float dashCooldown = 0.5f;
     public float groundCheckDistance = 0.1f; // Distance for ground check raycast
+    public float fastFallMultiplier = 2f; // Multiplier for fast falling
     public LayerMask groundLayer; // LayerMask for ground detection
 
     private Rigidbody2D rb;
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
         if (!isDashing)
         {
             Move();
+            HandleFastFall(); // Handle fast fall
         }
 
         HandleDash();
@@ -115,6 +117,14 @@ public class PlayerController : MonoBehaviour
             {
                 canDash = true;
             }
+        }
+    }
+
+    void HandleFastFall()
+    {
+        if (Input.GetKey(KeyCode.S) && !isGrounded && !isDashing)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, -Mathf.Abs(rb.velocity.y) * fastFallMultiplier);
         }
     }
 
