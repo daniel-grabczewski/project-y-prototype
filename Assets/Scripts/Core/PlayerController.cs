@@ -6,10 +6,10 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
-    public float dashSpeed = 10f;
+    public float dashSpeed = 20f;
     public float dashDuration = 0.2f;
     public float dashCooldown = 0.5f;
-    public float groundCheckDistance = 0.1f; // Distance for ground check raycast
+    public float groundCheckDistance = 5f; // Distance for ground check raycast
     public float fastFallMultiplier = 2f; // Multiplier for fast falling
     public float gravityScale = 2f; // Normal gravity scale
     public float fallMultiplier = 2.5f; // Gravity scale for faster falling
