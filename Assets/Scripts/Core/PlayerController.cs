@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-        float moveInput = Input.GetAxis("Horizontal");
+        float moveInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
     }
 
@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
     {
         if (canDash && Input.GetKeyDown(KeyCode.Space))
         {
-            float moveInput = Input.GetAxis("Horizontal");
+            float moveInput = Input.GetAxisRaw("Horizontal");
             if (moveInput != 0) // Dashing in the direction of movement
             {
                 StartDash(new Vector2(moveInput, 0).normalized);
